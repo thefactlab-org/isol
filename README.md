@@ -25,8 +25,8 @@
 ## Installation
 
 > foundry for install <br/>
-> `forge install thefactlab-org/isol --no-commit`
-> and add file `remappings.txt` with `@thefactlab-org/=lib/contracts`
+> `forge install thefactlab-org/isol OpenZeppelin/openzeppelin-contracts`
+> and add file `remappings.txt` with `@thefactlab-org/=lib/contracts/`
 
 ```bash [npm]
 npm i isol
