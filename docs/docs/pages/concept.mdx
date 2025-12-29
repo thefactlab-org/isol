@@ -1,0 +1,45 @@
+# Concept [Concept design for isol]
+
+## Overview
+
+![imag](/design.png)
+
+A dedicated interface that defines standards and structural patterns for smart contracts written in Solidity.
+It is developed based on OpenZeppelin standards to ensure security, reliability, and compatibility. This architecture presents a structured and scalable approach to building smart contracts. It follows a layered design that starts from standards and core components, then extends functionality through kits and flexible modular components.
+
+The goal of this architecture is to:
+
+- Provide a simple, fast, and highly usable development experience
+- Encourage concise, clean code in just a few lines
+- Enable easy customization and expansion
+- Ensure security and reliability (OpenZeppelin standards)
+
+## Base
+
+The fundamental contract layer used as the foundation for developing other smart contracts.
+It provides the essential core functionalities required to build and operate smart contracts.
+
+- Core smart contract structures
+- Fundamental logic
+- Essential building blocks
+
+## Kit
+
+A collection of ready-to-use extensions that add new features and enhanced capabilities to Base contracts.
+It helps speed up development while reducing complexity.
+
+- Ready-to-use features
+- Pre-built enhancements
+- Extensions that plug directly into Base contracts
+- Faster development
+- Built-in functionality
+- Less boilerplate
+
+## Modular
+
+A modular extension layer designed for building highly flexible and customizable smart contracts.
+Developers can freely select, combine, or integrate different modules depending on their specific needs.
+
+- Highly configurable extensions
+- Add or remove features as needed
+- Suitable for advanced or specialized smart contracts

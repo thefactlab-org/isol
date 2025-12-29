@@ -1,0 +1,280 @@
+# ERC20xTransferWithAuthorize [isol/contracts/modular/ERC20xTransferWithAuthorize.sol]
+
+**Modular** The `ERC20xTransferWithAuthorize` is an ERC20 extension for modular, off-chain authorized transfers and burns using EIP-712 signatures. It enables meta-transactions, relayer support, and gasless transfers by allowing anyone to submit signed authorizations for transfers or burns. Designed for flexible integration with other contracts or features.
+
+:::note
+This contract requires a dependency on the base `ERC20` from **OpenZeppelin** or the ERC20 toolkit provided by this project.
+
+```
+import "openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+{/* > import "openzeppelin/contracts/token/ERC20/ERC20.sol"; */}
+:::
+
+## Import
+
+```solidity
+import "isol/contracts/modular/ERC20xTransferWithAuthorize.sol";
+```
+
+## Usage
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.30;
+
+import "isol/contracts/kit/KitxERC20.sol";
+import "isol/contracts/modular/ERC20xTransferWithAuthorize.sol";
+
+contract ERC20xAuth is KitxERC20, ERC20xTransferWithAuthorize {
+	constructor() 
+		KitxERC20("MyToken", "MTK", 1000000)
+        ERC20xTransferWithAuthorize(
+            "MyToken", 
+            "1"
+        )
+	{}
+}
+```
+
+## Arguments
+
+| Parameter         | Type      | Description                                                      |
+| :---------------- | :-------- | :--------------------------------------------------------------- |
+| `domainName`      | `string`  | EIP-712 domain name for signature verification                   |
+| `domainVersion`   | `string`  | EIP-712 domain version for signature verification                |
+
+### domainName
+
+- **Type:** `string`
+
+The EIP-712 domain name used for signature verification, e.g., "MyToken".
+
+```ts
+contract ERC20xAuth is ERC20xTransferWithAuthorize {
+	constructor() 
+		ERC20xTransferWithAuthorize(
+			"ERC20xAuth Token", // Name (string)
+			"AUTH", // Symbol (string)
+			1000000, // Initial Supply (number: uint256)
+            "ERC20xAuth Token", // [!code focus] Domain Name (string)
+            "1" // Domain Version (string)
+		)
+	{}
+}
+```
+
+### domainVersion
+
+- **Type:** `string`
+
+The EIP-712 domain version used for signature verification, e.g., "1".
+
+```ts
+contract ERC20xAuth is ERC20xTransferWithAuthorize {
+	constructor() 
+		ERC20xTransferWithAuthorize(
+			"ERC20xAuth Token", // Name (string)
+			"AUTH", // Symbol (string)
+			1000000, // Initial Supply (number: uint256)
+            "ERC20xAuth Token", // Domain Name (string)
+            "1" // [!code focus] Domain Version (string)
+		)
+	{}
+}
+```
+
+## Functions
+
+### Read
+| Function            | Arguments                                 | Description                                              |
+| :------------------ | :---------------------------------------- | :------------------------------------------------------- |
+| `BURN_TYPEHASH`     | -                                         | Check the typehash used for burn authorization           |
+| `TRANSFER_TYPEHASH` | -                                         | Check the typehash used for transfer authorization       |
+| `allowance`         | owner (`address`), spender (`address`)    | Check approved amount for spender                        |
+| `authorizeState`    | authorizer (`address`), nonce (`bytes32`) | Check authorization state                                |
+| `balanceOf`         | account (`address`)                       | Get token balance of an address                          |
+| `decimals`          | -                                         | Get number of decimals used by the token                 |
+| `eip712Domain`      | -                                         | Check the EIP-712 domain used for signature verification |
+| `name`              | -                                         | Get the name of the token                                |
+| `symbol`            | -                                         | Get the symbol of the token                              |
+| `totalSupply`       | -                                         | Get the total supply of the token                        |
+
+### Write
+| Function            | Interact | Arguments                                           | Description                                                                                                               |
+| :------------------ | :------- | :-------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| `approve`           | user     | spender (`address`), value (`uint256`)              | Allow spender to use your tokens                                                                                          |
+| `burnWithAuthorize` | user     | from (`address`), value (`uint256`), createTime (`uint256`), expireTime (`uint256`), nonce (`bytes32`), auth (`bytes`) | Burn tokens with authorization                         |
+| `transfer`          | user     | to (`address`), value (`uint256`)                   | Send tokens to another address                                                                                            |
+| `transferFrom`      | user     | from (`address`), to (`address`), value (`uint256`) | Move tokens using allowance                                                                                               |
+| `transferWithAuthorize` | user     | from (`address`), to (`address`), value (`uint256`), createTime (`uint256`), expireTime (`uint256`), nonce (`bytes32`), auth (`bytes`) | Transfer tokens with authorization |
+
+## Events
+| Logs                                                                                                                                                |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Transfer`(address indexed from, address indexed to, uint256 value)                                                                                 |
+| `Approval`(address indexed owner, address indexed spender, uint256 value)                                                                           |
+| `BurnWithAuthorize`(address sender, address from, uint256 value, uint256 createTime, uint256 expireTime, bytes32 nonce, bytes auth)                 |
+| `TransferWithAuthorize`(address sender, address from, address to, uint256 value, uint256 createTime, uint256 expireTime, bytes32 nonce, bytes auth) |
+
+## Features
+Functions are inherited from [BasexERC20](../base/BasexERC20.mdx), with additional new features below.
+
+| Function  | Type       | Interact | Arguments   | Description |
+| :------------------     | :---- | :---- | :------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------- |
+| `BURN_TYPEHASH`         | read  | -     | -                                                                                                                                      | Check the typehash used for burn authorization           |
+| `TRANSFER_TYPEHASH`     | read  | -     | -                                                                                                                                      | Check the typehash used for transfer authorization       |
+| `authorizeState`        | read  | -     | authorizer (`address`), nonce (`bytes32`)                                                                                              | Check authorization state                                |
+| `eip712Domain`          | read  | -     | -                                                                                                                                      | Check the EIP-712 domain used for signature verification |
+| `burnWithAuthorize`     | write | user  | from (`address`), value (`uint256`), createTime (`uint256`), expireTime (`uint256`), nonce (`bytes32`), auth (`bytes`)                 | Burn tokens with authorization                           |
+| `transferWithAuthorize` | write | user  | from (`address`), to (`address`), value (`uint256`), createTime (`uint256`), expireTime (`uint256`), nonce (`bytes32`), auth (`bytes`) | Transfer tokens with authorization                       |
+
+## References
+Source code: [ERC20xTransferWithAuthorize](https://github.com/thefactlab-org/isol/tree/main/contracts/modular/ERC20xTransferWithAuthorize.sol) <br/>
+OpenZeppelin: [ERC20](https://docs.openzeppelin.com/contracts/5.x/api/token/erc20#erc20), [ReentrancyGuard](https://docs.openzeppelin.com/contracts/5.x/api/utils#reentrancyguard)
+
+## Examples
+
+### Deploy
+
+```ts [./MyToken.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.30;
+
+import "isol/contracts/modular/ERC20xTransferWithAuthorize.sol"; // Add modular ERC20xTransferWithAuthorize for advanced transfer with authorization
+import "isol/contracts/kit/KitxERC20.sol"; // Add kit KitxERC20 for base ERC20 functionalities
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol"; // Sample additional custom feature
+
+contract MyToken is ERC20xTransferWithAuthorize, KitxERC20, ERC20Pausable { // initialize ERC20xTransferWithAuthorize
+    constructor()
+        KitxERC20("MyToken", "MTK", 1000000)
+        ERC20xTransferWithAuthorize( // use ERC20xTransferWithAuthorize constructor
+            "MyToken", // Domain Name (string)
+            "1" // Domain Version (string)
+        )
+    {}
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+
+    function _update(address from, address to, uint256 value)
+        internal
+        override(ERC20, ERC20Pausable)
+    {
+        super._update(from, to, value);
+    }
+}
+```
+
+### Interact
+
+:::note
+Recommend [dacc-js](https://dacc-js.thefactlab.org/functions/dacc-signature/sign-typed-data) an easy-to-use library for interactions, designed to scale your services from Web2 to Web3.
+:::
+
+:::warning
+Please ensure that you have sufficient token balance and gas fees in your wallet before performing token transfers.
+:::
+
+```ts [./interact.ts]
+import { daccSignTypedData } from "dacc-js";
+import { createWalletClient, http } from 'viem';
+import { parseAbi, toHex } from "viem";
+import { privateKeyToAccount } from 'viem/accounts';
+import { optimismSepolia } from "viem/chains";
+
+// ==========================================
+// CONFIG FOR SIGNING
+// ==========================================
+const domainName = "ERC20_X_AUTH";
+const domainVersion = "VERSION";
+const chainId = 11155420; // number
+const contract = "ERC20_X_AUTH...CONTRACT_ADDRESS";
+const walletAddress = "FROM...WALLET_ADDRESS";
+const toAddress = "TO...WALLET_ADDRESS";
+const amount = 1000000000000000000n; // decimal
+
+const nonce = crypto.getRandomValues(new Uint8Array(32)); // bytes32
+const now = Math.floor(Date.now() / 1000);
+const createTime = now - 60;
+const expireTime = now + 3600;
+
+const daccID = "DACC_PUBLIC_KEY";
+const daccPassword = "DACC_PASSWORD_SECRETKEY";
+
+const sponsorPrivateKey = "0X...PRIVEATE_KEY";
+
+// ==========================================
+// SIGNING WITH DACC-JS
+// ==========================================
+const signed = await daccSignTypedData({
+  daccPublickey: daccID,
+  passwordSecretkey: daccPassword,
+  network: optimismSepolia,
+  domain: {
+    name: domainName,
+    version: domainVersion,
+    chainId: chainId,
+    verifyingContract: contract
+  },
+  types: {
+    TransferWithAuthorize: [
+        { name: "from", type: "address" },
+        { name: "to", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "createTime", type: "uint256" },
+        { name: "expireTime", type: "uint256" },
+        { name: "nonce", type: "bytes32" }
+    ]
+  },
+  primaryType: "TransferWithAuthorize",
+  message: {
+    from: walletAddress,
+    to: toAddress,
+    value: amount,
+    createTime,
+    expireTime,
+    nonce: toHex(nonce)
+  }
+});
+// console.log('Signed Data:', signed);
+
+// ==========================================
+// SEND TRANSACTION WITH VIEM
+// ==========================================
+const walletClient = createWalletClient({
+  account: privateKeyToAccount(sponsorPrivateKey as `0x${string}`),
+  chain: optimismSepolia,
+  transport: http(),
+});
+
+const abiContract = parseAbi([
+  'function transferWithAuthorize(address from, address to, uint256 value, uint256 createTime, uint256 expireTime, bytes32 nonce, bytes calldata auth)',
+]);
+
+const tx = await walletClient.writeContract({
+    address: contract as `0x${string}`,
+    abi: abiContract,
+    functionName: "transferWithAuthorize",
+    args: [
+        walletAddress as `0x${string}`,
+        toAddress as `0x${string}`,
+        BigInt(amount),
+        BigInt(createTime),
+        BigInt(expireTime),
+        toHex(nonce),
+        signed.signature
+    ],
+});
+console.log('Transaction Hash:', tx);
+```

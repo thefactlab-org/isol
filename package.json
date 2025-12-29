@@ -1,0 +1,31 @@
+{
+  "name": "isol",
+  "version": "0.0.1",
+  "description": "isol | Interface SmartContract Solidity - A modern smart contract toolkit",
+  "license": "GPL-3.0-only",
+  "author": "nidz-the-fact",
+  "repository": "https://github.com/thefactlab-org/isol",
+  "homepage": "https://isol.thefactlab.org",
+  "keywords": [
+    "solidity",
+    "smart",
+    "contracts",
+    "smart-contracts",
+    "ethereum",
+    "toolkit",
+    "library",
+    "interface"
+  ],
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0"
+  }
+}

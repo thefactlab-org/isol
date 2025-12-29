@@ -1,0 +1,35 @@
+---
+layout: landing
+---
+
+import { HomePage } from 'vocs/components'
+ 
+<HomePage.Root>
+  <HomePage.Logo />
+  <HomePage.Tagline>Interface SmartContract Solidity</HomePage.Tagline>
+  :::code-group
+
+    ```bash [npm]
+    npm i isol
+
+    ```
+
+    ```bash [bun]
+    bun add isol
+    ```
+ 
+    ```bash [yarn]
+    yarn add isol
+    ```
+    
+    ```bash [pnpm]
+    pnpm add isol
+    ```
+  :::
+  {/* <HomePage.Description>A modern set of extensible smart contract components, designed for future trends and broad utility. Simplifies development, accelerates deployment, and ensures efficiency and security by leveraging popular, standard libraries like OpenZeppelin.</HomePage.Description> */}
+  <HomePage.Description>A modern smart contract toolkit, fast to start, designed for simple and secure with <strong>OpenZeppelin</strong> standards. Built for easy use and <strong>future trends.</strong></HomePage.Description>
+  <HomePage.Buttons>
+    <HomePage.Button href="/getting-started" variant="accent">Get started</HomePage.Button>
+    <HomePage.Button href="https://github.com/thefactlab-org/isol">GitHub</HomePage.Button>
+  </HomePage.Buttons>
+</HomePage.Root>
