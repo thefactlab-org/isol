@@ -1,5 +1,5 @@
 import { defineConfig } from "vocs";
-import { version } from "./package.json";
+import { version } from ".././package.json";
 
 export default defineConfig({
   title: "isol",
