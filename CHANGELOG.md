@@ -1,5 +1,11 @@
 # isol
 
+## 0.0.3
+
+### Patch Changes
+
+- fix: foundry install (2)
+
 ## 0.0.2
 
 ### Patch Changes
